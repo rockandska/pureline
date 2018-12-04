@@ -246,7 +246,7 @@ function battery_module {
 	if [ -d $batt_dir"0" ]; then
 		batt_dir=$batt_dir"0"
 	elif [ -d $batt_dir"1" ]; then
-		batt_dir=$batt_dir1""
+		batt_dir=$batt_dir"1"
 	else
 		return 1
 	fi
@@ -303,11 +303,10 @@ function return_code_module {
 # -----------------------------------------------------------------------------
 # append to prompt: end the current promptline and start a newline
 function newline_module {
-	__newline=1
 	if [ -n "$__last_color" ]; then
-		PS1+=$(section_end $__last_color ${1:-'Default'})
+		PS1+=$(section_end $__last_color 'Default')
 	fi
-	PS1+="\[\e[K\]\n"
+	PS1+="\n"
 	unset __last_color
 }
 
@@ -330,13 +329,8 @@ function pureline_ps1 {
 
 	# cleanup
 	PS1+="${colors[Color_Off]} "
-	# only clear the line at the end for PS1 monoline
-	if [[ ${__newline:-0} == 0 ]];then
-		PS1+="\[\e[K\]"
-	fi
 	unset __last_color
 	unset __return_code
-	unset __newline
 }
 
 # -----------------------------------------------------------------------------
